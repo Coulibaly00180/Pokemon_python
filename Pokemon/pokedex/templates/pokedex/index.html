@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokémons</title>
+</head>
+<body>
+    <form method="get" action="{% url 'index_pokedex' %}">
+        <input type="text" name="search" placeholder="Rechercher un Pokémon..." value="{{ search_query }}">
+        <button type="submit">Rechercher</button>
+    </form>
+    <h1>Liste des Pokémons</h1>
+    <p>Total de Pokémon : {{ total_pokemon }}</p>
+    <p>Page {{ current_page }} sur {{ total_pages }}</p>
+
+    <div>
+        {% for pokemon in pokemons %}
+            <div>
+                <h2>{{ pokemon.name }}</h2>
+                <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}">
+                <p>Numéro dans le Pokédex : {{ pokemon.pokedex_number }}</p>
+                <!-- Bouton Afficher détails -->
+                <a href="{% url 'detail_pokemon' pokemon.pokedex_number %}">Détails</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        {% if current_page > 1 %}
+            <a href="?page={{ current_page|add:"-1" }}">Précédent</a>
+        {% endif %}
+        {% if current_page < total_pages %}
+            <a href="?page={{ current_page|add:"1" }}">Suivant</a>
+        {% endif %}
+    </div>
+</body>
+</html>
