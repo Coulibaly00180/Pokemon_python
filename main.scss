@@ -1,0 +1,159 @@
+@import "./config";
+body {
+    background-image: url('background2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    header {
+    background: transparent;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px;
+    .left-menu, .right-menu {
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+    }
+    > div {
+        display: flex;
+        align-items: center;
+        margin-left: 50px; 
+
+        .logo {
+            margin-right: 20px; 
+
+            img {
+                max-width: 50px;
+                height: auto;
+            }
+        }
+
+        .left-menu {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                margin-right: 20px; 
+
+                &:last-child {
+                    margin-right: 0; 
+                }
+                a{
+                    padding: 5px 10px;
+                    display: block;
+                    transition: all 0.3s ease;
+                }
+                &:hover{
+                    transform: scale(1.05);
+                }
+            }
+        }
+    }
+    .right-menu {
+        display: flex;
+        align-items: center; 
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 35px;
+            width: 100px;
+            padding: 8px 15px;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+            &:nth-child(1) { 
+                background-color: #4CAF50; 
+                color: white;
+                font-size: larger;
+                border-radius: 20px
+            }
+    
+            &:nth-child(2) { 
+                background-color: #2196F3; 
+                color: white;
+                font-size: larger;
+                border-radius: 20px        }
+    
+            &:nth-child(3) { 
+                background-color: #FFC107; 
+                color: white;
+                font-size: larger;
+                border-radius: 20px 
+            }
+    
+            &:nth-child(4) { 
+                background-color: #E91E63; 
+                color: white;
+                font-size: larger;
+                border-radius: 20px; 
+            }
+            &:nth-child(5){
+                background-color: #914b0b; 
+                color: white;
+                font-size: larger;
+                border-radius: 20px;
+            }
+        }
+
+     
+    }
+    }
+
+}
+
+main {
+    .first-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 120vh; 
+    
+        .search-box-container, .search-button-container {
+            width: 50%; 
+            display: flex;
+            justify-content: center; 
+            margin: 10px 0; 
+        }
+    
+        #search-box {
+            width: 100%; 
+            padding: 12px 20px;
+            border: 2px solid #ccc;
+            border-radius: 30px; 
+            outline: none; 
+            font-size: 16px; 
+    
+            &:focus {
+                border-color: #4CAF50; 
+            }
+        }
+    
+        #search-button {
+            padding: 12px 100px;
+            border: none;
+            border-radius: 30px; 
+            background-color: #4CAF50; 
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+    
+            &:hover {
+                background-color: #45a049;
+            }
+        }
+    }
+    
+}
+
