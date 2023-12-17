@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchBox = document.getElementById("search-box");
 
     searchButton.addEventListener("click", () => {
-        const searchTerm = searchBox.value.trim(); // Trim whitespace from the search term
+        const searchTerm = searchBox.value.trim();
         if (searchTerm) {
             searchPokemon(searchTerm);
         }
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function searchPokemon(searchTerm) {
     const pokemonDisplay = document.getElementById("pokemon-display");
-    pokemonDisplay.innerHTML = ''; // Clear previous results
+    pokemonDisplay.innerHTML = ''; 
 
     fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm.toLowerCase()}`)
         .then(response => {
@@ -30,6 +30,7 @@ function searchPokemon(searchTerm) {
 }
 
 function displayPokemon(pokemon) {
+    console.log(pokemon);
     const pokemonDisplay = document.getElementById("pokemon-display");
     pokemonDisplay.innerHTML = `
         <div class="pokemon-card">
@@ -37,7 +38,6 @@ function displayPokemon(pokemon) {
             <h2>${pokemon.name}</h2>
             <p>Attack: ${pokemon.stats[1].base_stat}</p>
             <p>Defense: ${pokemon.stats[2].base_stat}</p>
-            <!-- Add more details as needed -->
         </div>
     `;
 }
