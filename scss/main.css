@@ -1,6 +1,5 @@
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -30,134 +29,87 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
-
 body header {
   background: transparent;
   padding: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
 }
-
-body header .left-menu, body header .right-menu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  color: #ffffff;
-}
-
 body header > div {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   margin-left: 50px;
 }
-
 body header > div .logo {
   margin-right: 20px;
 }
-
 body header > div .logo img {
   max-width: 50px;
   height: auto;
 }
-
 body header > div .left-menu {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-
 body header > div .left-menu li {
   margin-right: 20px;
 }
-
 body header > div .left-menu li:last-child {
   margin-right: 0;
 }
-
 body header > div .left-menu li a {
   padding: 5px 10px;
   display: block;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 body header > div .left-menu li:hover {
-  -webkit-transform: scale(1.05);
-          transform: scale(1.05);
+  transform: scale(1.05);
 }
-
 body header .right-menu {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 body header .right-menu button {
   padding: 8px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   margin-left: 35px;
   width: 100px;
-  padding: 8px 15px;
+  font-size: larger;
+  border-radius: 20px;
 }
-
 body header .right-menu button:hover {
-  -webkit-transform: scale(1.05);
-          transform: scale(1.05);
+  transform: scale(1.05);
 }
-
 body header .right-menu button:nth-child(1) {
   background-color: #4CAF50;
   color: white;
   font-size: larger;
   border-radius: 20px;
 }
-
 body header .right-menu button:nth-child(2) {
   background-color: #2196F3;
   color: white;
   font-size: larger;
   border-radius: 20px;
 }
-
 body header .right-menu button:nth-child(3) {
   background-color: #FFC107;
   color: white;
   font-size: larger;
   border-radius: 20px;
 }
-
 body header .right-menu button:nth-child(4) {
   background-color: #E91E63;
   color: white;
   font-size: larger;
   border-radius: 20px;
 }
-
 body header .right-menu button:nth-child(5) {
   background-color: #914b0b;
   color: white;
@@ -166,33 +118,19 @@ body header .right-menu button:nth-child(5) {
 }
 
 main .first-section {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  height: 120vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
 }
-
 main .first-section .search-box-container, main .first-section .search-button-container {
   width: 50%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   margin: 10px 0;
+  text-align: center;
 }
-
 main .first-section #search-box {
   width: 100%;
   padding: 12px 20px;
@@ -201,23 +139,63 @@ main .first-section #search-box {
   outline: none;
   font-size: 16px;
 }
-
 main .first-section #search-box:focus {
-  border-color: #4CAF50;
+  border-color: #fff;
 }
-
 main .first-section #search-button {
   padding: 12px 100px;
   border: none;
   border-radius: 30px;
-  background-color: #4CAF50;
+  background-color: #45a05c;
   color: white;
   cursor: pointer;
   font-size: 16px;
   outline: none;
 }
-
 main .first-section #search-button:hover {
-  background-color: #45a049;
+  background-color: #367c48;
 }
-/*# sourceMappingURL=main.css.map */
+main .first-section #pokemon-display {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+main .first-section .pokemon-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  width: 200px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+main .first-section .pokemon-card h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.5em;
+}
+main .first-section .pokemon-card p {
+  color: #666;
+  margin: 5px 0;
+}
+main .first-section .pokemon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+main .first-section .pokemon-card .pokemon-image {
+  width: 100px;
+  height: auto;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+main .first-section .error-message {
+  color: #ff0000;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}/*# sourceMappingURL=main.css.map */

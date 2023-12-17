@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="scss/main.css">
-<title>Pokédex Application</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/main.css">
+    <title>Pokédex Application</title>
 </head>
 <body>
     <header>
-        <div>
+        <div class="header-container">
             <div class="logo"><img src="img/logo.png" alt=""></div>
             <ul class="left-menu">
-                <li><a href="#">home</li></a> 
-                <li><a href="#"> dev</li></a>
-                <li><a href="#">news</li></a> 
-                <li><a href="#"> life</li></a>
+                <li><a href="#">home</a></li>
+                <li><a href="#">dev</a></li>
+                <li><a href="#">news</a></li>
+                <li><a href="#">life</a></li>
             </ul>
         </div>
         <div class="right-menu">
@@ -24,27 +23,29 @@
             <button>Item 3</button>
             <button>Item 4</button>
             <button>Item 5</button>
-
         </div>
     </header>
 
     <main>
         <section class="first-section">
-           
-                <div class="search-box-container">
-                    <input type="text" id="search-box" placeholder="Search...">
-                </div>
-                <div class="search-button-container"">
-                    <button type="submit" id="search-button">Search</button>
-                </div>
+            <!-- First section -->
+            <div class="search-box-container">
+                <input type="text" id="search-box" placeholder="Search...">
+            </div>
+            <div class="search-button-container">
+                <button type="submit" id="search-button">Search</button>
+            </div>
+            <!-- Displaying Pokemon -->
+            <div id="pokemon-display"></div>
+            <div id="error-container" class="error-message"></div> <!-- Error message -->
         </section>
         <section class="second-section">
-            <!-- Content of the second section -->
+            <!-- Second section -->
         </section>
     </main>
     
 
     <footer></footer>
-
+    <script src="./js/script.js"></script>
 </body>
 </html>
