@@ -21,5 +21,11 @@ ul{
     list-style: none;
 }
 
+@mixin right-items-style{
+    color: white;
+    font-size: larger;
+    border-radius: 20px;
+}
+
 $focusColor : #fff;
 $buttonPrimaryColor: #45a05c;
