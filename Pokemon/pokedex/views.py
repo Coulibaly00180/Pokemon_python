@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from .models import Pokemon, Team, User
 import requests
 
 from django.core.paginator import Paginator
@@ -26,6 +25,7 @@ def get_pokemon_details(pokedex_number):
     }
 
 # Ajoutez un pokémon dans la team
+'''
 def add_pokemon_team(request, pokedex_number, user_id):
     response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/')
     pokemon_details = response.json()
@@ -49,6 +49,7 @@ def add_pokemon_team(request, pokedex_number, user_id):
 
     team.pokemons.add(pokemon)
     team.save()
+'''
 
 def recherche_pokemon(search_query, page=1, limit=10):
     response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit=1000')  # Obtenez une grande liste de Pokémon
