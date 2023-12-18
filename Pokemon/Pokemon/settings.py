@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pokedex.apps.PokedexConfig',
     'combat.apps.CombatConfig',
+    'team.apps.TeamConfig',
 ]
 
 MIDDLEWARE = [

@@ -12,5 +12,9 @@
     {% for stat in pokemon.stats_of %}
         <li>{{ stat.name|capfirst }}: {{ stat.value }}</li>
     {% endfor %}
+    <form method="post" action="{% url 'add_pokemon_to_team' pokemon.number %}">
+        {% csrf_token %}
+        <button type="submit">Ajouter à l'équipe</button>
+    </form>
 </body>
 </html>

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Pokemon, Team, User
 import requests
 
 from django.core.paginator import Paginator
@@ -9,6 +10,7 @@ def get_pokemons(page=1, limit=10):
     response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}')
     return response.json()
 
+# Afficher les informations d'un pokémon
 def get_pokemon_details(pokedex_number):
     url = f"https://pokeapi.co/api/v2/pokemon/{pokedex_number}/"
     response = requests.get(url)
@@ -22,6 +24,31 @@ def get_pokemon_details(pokedex_number):
         'stats': [base_stat['stat']['name'] for base_stat in pokemon_details['stats']],
         'stats_of': [{'name': stat['stat']['name'], 'value': stat['base_stat']} for stat in pokemon_details['stats']],
     }
+
+# Ajoutez un pokémon dans la team
+def add_pokemon_team(request, pokedex_number, user_id):
+    response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/')
+    pokemon_details = response.json()
+    pokemon, created = Pokemon.objects.get_or_create(
+        number = pokedex_number,
+        defaults={
+            'name': pokemon_details['name'],
+            'type1': pokemon_details['types'][0]['type']['name'],
+            'type2': pokemon_details['types'][1]['type']['name'] if len(pokemon_details['types']) > 1 else None,
+            'hp': pokemon_details['stats'][0]['base_stat'],
+            'attack': pokemon_details['stats'][1]['base_stat'],
+            'defense': pokemon_details['stats'][2]['base_stat'],
+            'special_defense': pokemon_details['stats'][3]['base_stat'],
+            'defense_sp': pokemon_details['stats'][4]['base_stat'],
+            'speed': pokemon_details['stats'][5]['base_stat'],
+        }
+    )
+
+    user = User.objects.get(id=user_id)
+    team, created = Team.objects.get_or_create(user=user)
+
+    team.pokemons.add(pokemon)
+    team.save()
 
 def recherche_pokemon(search_query, page=1, limit=10):
     response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit=1000')  # Obtenez une grande liste de Pokémon
