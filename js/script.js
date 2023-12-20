@@ -49,6 +49,8 @@ function displayPokemon(pokemon) {
     `;
 }
 
+
+// Change to Python
 function addToTeam(pokemonName, imageUrl) {
     if (team.length < 6 && !team.some(member => member.name === pokemonName)) {
         team.push({ name: pokemonName, image: imageUrl });
@@ -58,6 +60,7 @@ function addToTeam(pokemonName, imageUrl) {
     }
 }
 
+// Change to python
 function updateTeamDisplay() {
     const teamDisplay = document.getElementById("pokemon-team");
     teamDisplay.innerHTML = team.map(member => `
