@@ -1,20 +1,45 @@
 from django.shortcuts import render
 import requests
+from django.http import JsonResponse
 
-from django.core.paginator import Paginator
 
-# Recuperer 10 pokemon
-def get_pokemons(page=1, limit=10):
-    offset = (page - 1) * limit
-    response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}')
-    return response.json()
+# Recupère 20 pokemons en premier
+def get_paginated_pokemons(request):
+    limit = request.GET.get('limit', 20)
+    offset = request.GET.get('offset', 0)
+
+    url = f"https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}"
+    response = requests.get(url)
+    if response.status_code != 200:
+        return JsonResponse({'error': 'API error'}, status=response.status_code)
+
+    pokemon_list = response.json()['results']
+    detailed_pokemons = []
+
+    for pokemon in pokemon_list:
+        detail_url = pokemon['url']
+        detail_response = requests.get(detail_url)
+        if detail_response.status_code == 200:
+            pokemon_details = detail_response.json()
+            detailed_pokemons.append({
+                'name': pokemon_details['name'],
+                'number': pokemon_details['id'],
+                'image': pokemon_details['sprites']['front_default']
+            })
+
+    return JsonResponse({'pokemons': detailed_pokemons})
 
 # Afficher les informations d'un pokémon
-def get_pokemon_details(pokedex_number):
+def pokemon_detail_view(request, pokedex_number):
     url = f"https://pokeapi.co/api/v2/pokemon/{pokedex_number}/"
     response = requests.get(url)
+
+    if response.status_code != 200:
+        return JsonResponse({'error': 'Pokémon not found or API error'}, status=response.status_code)
+
     pokemon_details = response.json()
-    return {
+
+    data = {
         'name': pokemon_details['name'],
         'image': pokemon_details['sprites']['other']['official-artwork']['front_default'],
         'types': [type['type']['name'] for type in pokemon_details['types']],
@@ -24,80 +49,25 @@ def get_pokemon_details(pokedex_number):
         'stats_of': [{'name': stat['stat']['name'], 'value': stat['base_stat']} for stat in pokemon_details['stats']],
     }
 
-# Ajoutez un pokémon dans la team
-'''
-def add_pokemon_team(request, pokedex_number, user_id):
-    response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/')
+    return JsonResponse(data)
+
+# Recherche pokemon
+def search_pokemon_by_name(request):
+    # Récupérer le nom du Pokémon depuis les paramètres de requête
+    pokemon_name = request.GET.get('name', '').lower()
+    if not pokemon_name:
+        return JsonResponse({'error': 'No Pokémon name provided'}, status=400)
+
+    url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name}/"
+    response = requests.get(url)
+    if response.status_code != 200:
+        return JsonResponse({'error': 'Pokémon not found'}, status=response.status_code)
+
     pokemon_details = response.json()
-    pokemon, created = Pokemon.objects.get_or_create(
-        number = pokedex_number,
-        defaults={
-            'name': pokemon_details['name'],
-            'type1': pokemon_details['types'][0]['type']['name'],
-            'type2': pokemon_details['types'][1]['type']['name'] if len(pokemon_details['types']) > 1 else None,
-            'hp': pokemon_details['stats'][0]['base_stat'],
-            'attack': pokemon_details['stats'][1]['base_stat'],
-            'defense': pokemon_details['stats'][2]['base_stat'],
-            'special_defense': pokemon_details['stats'][3]['base_stat'],
-            'defense_sp': pokemon_details['stats'][4]['base_stat'],
-            'speed': pokemon_details['stats'][5]['base_stat'],
-        }
-    )
-
-    user = User.objects.get(id=user_id)
-    team, created = Team.objects.get_or_create(user=user)
-
-    team.pokemons.add(pokemon)
-    team.save()
-'''
-
-def recherche_pokemon(search_query, page=1, limit=10):
-    response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit=1000')  # Obtenez une grande liste de Pokémon
-    all_pokemons = response.json()['results']
-
-    # Filtrer les Pokémon par le nom de recherche
-    filtered_pokemons = [pokemon for pokemon in all_pokemons if search_query.lower() in pokemon['name'].lower()]
-
-    # Pagination
-    paginator = Paginator(filtered_pokemons, limit)
-    pokemons_page = paginator.get_page(page)
-
-    return {
-        'results': pokemons_page.object_list,
-        'count': paginator.count
+    pokemon_data = {
+        'name': pokemon_details['name'],
+        'number': pokemon_details['id'],
+        'image': pokemon_details['sprites']['front_default'],
     }
 
-
-# Create your views here. Affichez les pokemons
-def index_pokedex(request):
-    search_query = request.GET.get('search', '')
-    page = int(request.GET.get('page', 1))
-    if search_query:
-        data = recherche_pokemon(search_query, page)
-    else:
-        data = get_pokemons(page)
-    total_pokemon = data['count']
-    total_pages = (total_pokemon + 9) // 10
-
-    pokemons = []
-    for pokemon in data['results']:
-        detail_response = requests.get(pokemon['url'])
-        detail_data = detail_response.json()
-
-        sprites = detail_data.get('sprites', {})
-        pokemons.append({
-            'name': detail_data['name'],
-            'image': sprites.get('front_default', 'default-image-url'),
-            'pokedex_number': detail_data['id']
-        })
-
-    return render(request, 'pokedex/index.html', {
-        'pokemons': pokemons,
-        'current_page': page,
-        'total_pages': total_pages,
-        'total_pokemon': total_pokemon
-    })
-
-def detail_pokemon_view(request, pokedex_number):
-    pokemon_details = get_pokemon_details(pokedex_number)
-    return render(request, 'pokedex/detail_pokemon.html', {'pokemon': pokemon_details})
+    return JsonResponse(pokemon_data)

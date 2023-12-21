@@ -9,8 +9,8 @@ class Pokemon(models.Model):
     hp = models.PositiveSmallIntegerField()
     attack = models.PositiveSmallIntegerField()
     defense = models.PositiveSmallIntegerField()
+    special_attack = models.PositiveSmallIntegerField()
     special_defense = models.PositiveSmallIntegerField()
-    defense_sp = models.PositiveSmallIntegerField()
     speed = models.PositiveSmallIntegerField()
 
     def __str__(self):

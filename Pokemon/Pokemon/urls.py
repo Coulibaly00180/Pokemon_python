@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pokedex/', include('pokedex.urls')),
     path('combat/', include('combat.urls')),
+    path('team/', include('team.urls')),
 ]
