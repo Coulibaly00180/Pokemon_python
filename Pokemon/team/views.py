@@ -80,6 +80,31 @@ def delete_team(request, team_id):
     team.delete()
     return JsonResponse({'success': f"Team with id {team_id} was deleted successfully"})
 
+# Voir toutes teams et les pokemons à l'interrieur des teams c'est à dire renvoyer un json de ce genre
+'''
+{
+    "team": "Vert"
+    "pokemons": [
+        {
+            "name": "bulbasaur"
+            "image": "url_image"
+        },
+        {
+            "name": "bulbasaur"
+            "image": "url_image"
+        }
+    ]
+}
+'''
+def showAllTeamsPokemon():
+    pass
+
+
+
+# Voir les pokemons d'une team
+def showTeamPokemon():
+    pass
+
 # Ajout d'un pokemon dans une team
 @csrf_exempt
 def add_pokemon_team(request, team_id, pokedex_number):
