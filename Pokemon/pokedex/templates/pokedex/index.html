@@ -1,25 +1,108 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Pokémons</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <!--<link rel="stylesheet" href="{% static 'style.css' %}"> -->
+    <style>
+        .card {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 16px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .allCards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .txtCards {
+            font-size:1.2em;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 30px; 
+            border: 1px solid #ccc;
+            border-radius: 20px; 
+            outline: none;
+            transition: border-color 0.3s ease;
+            width: 200px;
+        }
+        
+        .search-button {
+            margin-top:1em;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            }
+        
+        .search-button:hover {
+            background-color: #2078af;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .details {
+            font-size:2em;
+            padding-bottom: 1em;
+        }
+
+        body {
+            background-color: #D6EAF8;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            padding-top: 20px;
+            color: red;
+        }
+
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size:15px;
+        }
+    </style>
 </head>
 <body>
     <form method="get" action="{% url 'index_pokedex' %}">
-        <input type="text" name="search" placeholder="Rechercher un Pokémon..." value="{{ search_query }}">
-        <button type="submit">Rechercher</button>
+        <input class="search-input" type="text" name="search" placeholder="Rechercher un Pokémon..." value="{{ search_query }}">
+        <button class="search-button" type="submit">Rechercher</button>
     </form>
-    <h1>Liste des Pokémons</h1>
+    <h1>Mon Pokédex</h1>
     <p>Total de Pokémon : {{ total_pokemon }}</p>
     <p>Page {{ current_page }} sur {{ total_pages }}</p>
 
-    <div>
+    <div class="allCards">
         {% for pokemon in pokemons %}
-            <div>
-                <h2>{{ pokemon.name }}</h2>
-                <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}">
-                <p>Numéro dans le Pokédex : {{ pokemon.pokedex_number }}</p>
+            
+            <div class="card">
+                <p class="txtCards">{{ pokemon.pokedex_number }}</p>
+                <h2>{{ pokemon.name|capfirst }}</h2>
+                <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}" width="50%">
+            
                 <!-- Bouton Afficher détails -->
-                <a href="{% url 'detail_pokemon' pokemon.pokedex_number %}">Détails</a>
+                <a class="details" href="{% url 'detail_pokemon' pokemon.pokedex_number %}">+</a>
             </div>
         {% endfor %}
     </div>
