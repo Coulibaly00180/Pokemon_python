@@ -5,6 +5,8 @@
 <head>
     <title>Pokémons</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    
     <!--<link rel="stylesheet" href="{% static 'style.css' %}"> -->
     <style>
         .card {
@@ -38,10 +40,11 @@
             width: 100%;
             padding: 10px 40px 10px 30px; 
             border: 1px solid #ccc;
-            border-radius: 20px; 
+            border-radius: 10px; 
             outline: none;
             transition: border-color 0.3s ease;
             width: 200px;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .search-button {
@@ -50,9 +53,10 @@
             color: #fff;
             padding: 10px 20px;
             border: none;
-            border-radius: 20px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
             }
         
         .search-button:hover {
@@ -61,11 +65,21 @@
 
         a {
             text-decoration: none;
+            color: black;
         }
 
         .details {
-            font-size:2em;
-            padding-bottom: 1em;
+            font-size:1.5em;
+            border-radius: 50%;
+            margin-bottom : 0.5em;
+        }
+
+        .changePage {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1.5em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
         }
 
         body {
@@ -74,24 +88,75 @@
 
         h1 {
             font-family: 'Press Start 2P', cursive;
-            padding-top: 20px;
+            padding-top: 18px;
             color: red;
+            text-align: center;
         }
 
         h2 {
             font-family: 'Press Start 2P', cursive;
             font-size:15px;
+            margin-bottom:0;
+        }
+        .presentation {
+            text-align:center;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .nbPage {
+            font-size: 12px;
+        }
+        .section-home {
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar a.right {
+            float: right;
         }
     </style>
 </head>
 <body>
-    <form method="get" action="{% url 'index_pokedex' %}">
-        <input class="search-input" type="text" name="search" placeholder="Rechercher un Pokémon..." value="{{ search_query }}">
-        <button class="search-button" type="submit">Rechercher</button>
-    </form>
+    <div class="section-home">
+        <nav class="navbar">
+            <a href="#home">Icone</a>
+            <a href="#home">Accueil</a>
+            <a href="#pokedex">Pokedex</a>
+            <a href="#combat">Combat</a>
+            <a href="#inscription" class="right">Inscription</a>
+            <a href="#connexion" class="right">Connexion</a>
+        </nav>
+    </div>   
+    
     <h1>Mon Pokédex</h1>
-    <p>Total de Pokémon : {{ total_pokemon }}</p>
-    <p>Page {{ current_page }} sur {{ total_pages }}</p>
+    <div class="presentation">
+        <p>Total de Pokémon : {{ total_pokemon }}</p>
+        <form method="get" action="{% url 'index_pokedex' %}">
+            <input class="search-input" type="text" name="search" placeholder="Rechercher un Pokémon..." value="{{ search_query }}">
+            <button class="search-button" type="submit">Rechercher</button>
+            <p class="nbPage">Page {{ current_page }}/{{ total_pages }}</p>
+        </form>
+    </div>
+
+    <div class="changePage">
+        {% if current_page > 1 %}
+            <a href="?page={{ current_page|add:"-1" }}">Page Précédente</a>
+        {% endif %}
+        {% if current_page < total_pages %}
+            <a href="?page={{ current_page|add:"1" }}">Page Suivante</a>
+        {% endif %}
+    </div>
 
     <div class="allCards">
         {% for pokemon in pokemons %}
@@ -102,17 +167,17 @@
                 <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}" width="50%">
             
                 <!-- Bouton Afficher détails -->
-                <a class="details" href="{% url 'detail_pokemon' pokemon.pokedex_number %}">+</a>
+                <button class="details"><a href="{% url 'detail_pokemon' pokemon.pokedex_number %}">+</a></button>
             </div>
         {% endfor %}
     </div>
 
-    <div>
+    <div class="changePage">
         {% if current_page > 1 %}
-            <a href="?page={{ current_page|add:"-1" }}">Précédent</a>
+            <a href="?page={{ current_page|add:"-1" }}">Page Précédente</a>
         {% endif %}
         {% if current_page < total_pages %}
-            <a href="?page={{ current_page|add:"1" }}">Suivant</a>
+            <a href="?page={{ current_page|add:"1" }}">Page Suivante</a>
         {% endif %}
     </div>
 </body>

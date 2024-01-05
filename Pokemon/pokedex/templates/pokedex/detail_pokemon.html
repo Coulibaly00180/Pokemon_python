@@ -2,19 +2,65 @@
 <html>
 <head>
     <title>Détails du Pokémon</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    
+    <style>
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            padding-top: 18px;
+            text-align: center;
+            background: linear-gradient(70deg, blue, white);
+            margin: 0;
+            padding:20px;
+            border-bottom: 1px solid black;
+        }
+
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size:15px;
+            margin-bottom:0;
+            color:darkgrey;
+        }
+        .detailsCard {
+            text-align: center;
+            border : 2px solid black;
+            width: 50%;
+            margin: auto;
+            padding-bottom: 2em;
+        }
+        img {
+            padding: 2em;
+            width:30%;
+        }
+        .addTeam {
+            padding:10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .detail {
+
+        }
+        
+
+    </style>
 </head>
 <body>
-    <h1>Détails de {{ pokemon.name }}</h1>
-    <img src="{{ pokemon.image }}" alt="Image de {{ pokemon.name }}">
-    <p><strong>Type(s) :</strong> {{ pokemon.types|join:", " }}</p>
-    <p><strong>Taille :</strong> {{ pokemon.height }} dm</p>
-    <p><strong>Poids :</strong> {{ pokemon.weight }} hg</p>
-    {% for stat in pokemon.stats_of %}
-        <li>{{ stat.name|capfirst }}: {{ stat.value }}</li>
-    {% endfor %}
-    <form method="post" action="">
-        {% csrf_token %}
-        <button type="submit">Ajouter à l'équipe</button>
-    </form>
+    <div class="detailsCard">
+        <h1>{{ pokemon.name|capfirst }}</h1>
+        <img src="{{ pokemon.image }}" alt="Image de {{ pokemon.name }}">
+        <h2>Fiche détaillée</h2>
+        <div class="detail">
+            <p><strong>Type(s) :</strong> {{ pokemon.types|join:", " }}</p>
+            <p><strong>Taille :</strong> {{ pokemon.height }} dm</p>
+            <p><strong>Poids :</strong> {{ pokemon.weight }} hg</p>
+            {% for stat in pokemon.stats_of %}
+                <li>{{ stat.name|capfirst }}: {{ stat.value }}</li>
+            {% endfor %}
+        </div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <button class="addTeam" type="submit">Ajouter à l'équipe</button>
+        </form>
+    </div>
 </body>
 </html>
