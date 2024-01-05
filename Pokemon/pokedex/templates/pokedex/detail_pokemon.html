@@ -18,29 +18,45 @@
 
         h2 {
             font-family: 'Press Start 2P', cursive;
-            font-size:15px;
+            font-size:18px;
             margin-bottom:0;
             color:darkgrey;
+        }
+        h3 {
+            font-family: 'Orbitron', sans-serif;
         }
         .detailsCard {
             text-align: center;
             border : 2px solid black;
             width: 50%;
             margin: auto;
-            padding-bottom: 2em;
         }
         img {
-            padding: 2em;
             width:30%;
         }
         .addTeam {
             padding:10px;
+            margin:15px 0;
             font-family: 'Orbitron', sans-serif;
+            cursor:pointer;
         }
-        .detail {
-
+        .addTeam:hover {
+            background:#E8DAEF;
         }
-        
+        table, td, tr, thead, tbody {
+            border:1px solid black;
+            border-collapse: collapse;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+        table {
+            margin:auto;
+        }
+        td {
+            padding:6px 50px;
+            font-size: 13px;
+        }
 
     </style>
 </head>
@@ -49,14 +65,35 @@
         <h1>{{ pokemon.name|capfirst }}</h1>
         <img src="{{ pokemon.image }}" alt="Image de {{ pokemon.name }}">
         <h2>Fiche détaillée</h2>
-        <div class="detail">
-            <p><strong>Type(s) :</strong> {{ pokemon.types|join:", " }}</p>
-            <p><strong>Taille :</strong> {{ pokemon.height }} dm</p>
-            <p><strong>Poids :</strong> {{ pokemon.weight }} hg</p>
-            {% for stat in pokemon.stats_of %}
-                <li>{{ stat.name|capfirst }}: {{ stat.value }}</li>
-            {% endfor %}
-        </div>
+        <h3>Généralités</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Type(s)</td>
+                    <td>{{ pokemon.types|join:", " }}</td>
+                </tr>
+                <tr>
+                    <td>Taille</td>
+                    <td>{{ pokemon.height }} dm</td>
+                </tr>
+                <tr>
+                    <td>Poids</td>
+                    <td>{{ pokemon.weight }} hg</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Combat / Atouts</h3>
+        <table>
+            <tbody>
+                {% for stat in pokemon.stats_of %}
+                <tr>
+                    <td>{{ stat.name|capfirst }}</td> 
+                    <td>{{ stat.value }}</td>
+                <tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <form method="post" action="">
             {% csrf_token %}
             <button class="addTeam" type="submit">Ajouter à l'équipe</button>
