@@ -4,7 +4,7 @@ import requests
 from django.core.paginator import Paginator
 
 # Recuperer 10 pokemon
-def get_pokemons(page=1, limit=10):
+def get_pokemons(page=1, limit=12):
     offset = (page - 1) * limit
     response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}')
     return response.json()
