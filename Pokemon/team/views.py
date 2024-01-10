@@ -6,7 +6,7 @@ def create_team(request):
         team_name = request.POST.get('team_name')
         if team_name:
             Team.createTeam(team_name)
-            return redirect('some_view_to_redirect')  # Rediriger vers une vue appropriée
+            return redirect('create_team')  # Rediriger vers une vue appropriée
     return render(request, 'create_team.html')  # Renvoyer à la page de création d'équipe
 
 def delete_team(request, team_name):
@@ -52,9 +52,9 @@ def clear_pokemons_from_team(request, team_name):
 
 def showAllTeam(request):
     teams = Team.objects.all()  # Récupère toutes les équipes
-    return render(request, 'teams/all_teams.html', {'teams': teams})
+    return render(request, 'all_teams.html', {'teams': teams})
 
 def showTeam(request, id):
     team = Team.objects.get(id=id)  # Récupère l'équipe spécifique par son ID
     pokemons = team.pokemons.all()  # Récupère tous les Pokémon dans cette équipe
-    return render(request, 'teams/team_detail.html', {'team': team, 'pokemons': pokemons})
+    return render(request, 'team_detail.html', {'team': team, 'pokemons': pokemons})

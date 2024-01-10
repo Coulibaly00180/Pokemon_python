@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Détails du Pokémon</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-    
+
     <style>
         h1 {
             font-family: 'Press Start 2P', cursive;
@@ -12,61 +13,77 @@
             text-align: center;
             background: linear-gradient(70deg, blue, white);
             margin: 0;
-            padding:20px;
+            padding: 20px;
             border-bottom: 1px solid black;
         }
-
+        
         h2 {
             font-family: 'Press Start 2P', cursive;
-            font-size:18px;
-            margin-bottom:0;
-            color:darkgrey;
+            font-size: 18px;
+            margin-bottom: 0;
+            color: darkgrey;
         }
+        
         h3 {
             font-family: 'Orbitron', sans-serif;
         }
+        
         .detailsCard {
             text-align: center;
-            border : 2px solid black;
+            border: 2px solid black;
             width: 50%;
             margin: auto;
-            margin-top:1em;
+            margin-top: 1em;
         }
+        
         img {
-            width:30%;
+            width: 30%;
         }
+        
         .addTeam {
-            padding:10px;
-            margin:15px 0;
+            padding: 10px;
+            margin: 15px 0;
             font-family: 'Orbitron', sans-serif;
-            cursor:pointer;
+            cursor: pointer;
         }
+        
         .addTeam:hover {
-            background:#E8DAEF;
+            background: #E8DAEF;
         }
-        table, td, tr, thead, tbody {
-            border:1px solid black;
+        
+        table,
+        td,
+        tr,
+        thead,
+        tbody {
+            border: 1px solid black;
             border-collapse: collapse;
         }
+        
         td:first-child {
             font-weight: bold;
         }
+        
         table {
-            margin:auto;
+            margin: auto;
         }
+        
         td {
-            padding:6px 50px;
+            padding: 6px 50px;
             font-size: 13px;
         }
+        
         .section-home {
             width: 100%;
             background-size: cover;
             background-position: center;
         }
+        
         .navbar {
             overflow: hidden;
             background-color: #333;
         }
+        
         .navbar a {
             float: left;
             display: block;
@@ -75,24 +92,27 @@
             padding: 14px 16px;
             text-decoration: none;
         }
+        
         .navbar a.right {
             float: right;
         }
+        
         .changePage {
             display: flex;
             justify-content: space-between;
             padding: 0 1.5em;
             font-family: 'Orbitron', sans-serif;
             font-size: 15px;
-            margin-top:2em;
+            margin-top: 2em;
         }
+        
         a {
             text-decoration: none;
             color: black;
         }
-
     </style>
 </head>
+
 <body>
     <div class="section-home">
         <nav class="navbar">
@@ -104,10 +124,10 @@
             <a href="#inscription" class="right">Inscription</a>
             <a href="#connexion" class="right">Connexion</a>
         </nav>
-    </div>  
+    </div>
     <div class="changePage">
-        <a href="{% url 'detail_pokemon' pokemon.number|add:"-1" %}">Poké. Précédent</a>
-        <a href="{% url 'detail_pokemon' pokemon.number|add:"1" %}">Poké. Suivant</a>
+        <a href="{% url 'detail_pokemon' pokemon.number|add:" -1 " %}">Poké. Précédent</a>
+        <a href="{% url 'detail_pokemon' pokemon.number|add:" 1 " %}">Poké. Suivant</a>
     </div>
     <div class="detailsCard">
         <h1>{{ pokemon.name|capfirst }}</h1>
@@ -136,13 +156,13 @@
             <tbody>
                 {% for stat in pokemon.stats_of %}
                 <tr>
-                    <td>{{ stat.name|capfirst }}</td> 
+                    <td>{{ stat.name|capfirst }}</td>
                     <td>{{ stat.value }}</td>
-                <tr>
-                {% endfor %}
+                    <tr>
+                        {% endfor %}
             </tbody>
         </table>
-        <form method="post" action="">
+        <form method="post" action="% url ../views.py team_id %">
             {% csrf_token %}
             <label for="team">Choisissez une équipe :</label>
             <select name="team" id="team">
@@ -154,11 +174,11 @@
             <h3>Sélectionnez les attaques (max 4) :</h3>
             {% for attack in pokemon.attacks %}
             <input type="checkbox" id="attack_{{ forloop.counter }}" name="selected_attacks" value="{{ attack }}">
-            <label for="attack_{{ forloop.counter }}">{{ attack|capfirst }}</label><br>
-            {% endfor %}
+            <label for="attack_{{ forloop.counter }}">{{ attack|capfirst }}</label><br> {% endfor %}
 
             <button class="addTeam" type="submit">Ajouter à l'équipe</button>
         </form>
     </div>
 </body>
+
 </html>

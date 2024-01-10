@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Pokémon to Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        form {
+            margin-top: 20px;
+        }
+        
+        label,
+        select,
+        button {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Add Pokémon to Team: {{ team.name }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="pokemon_id">Select Pokémon:</label>
+            <select id="pokemon_id" name="pokemon_id">
+                {% for pokemon in pokemons %}
+                    <option value="{{ pokemon.id }}">{{ pokemon.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Select Attacks (up to 4):</label> {% for attack in attacks %}
+            <div>
+                <input type="checkbox" id="attack_{{ attack.id }}" name="attacks" value="{{ attack.id }}">
+                <label for="attack_{{ attack.id }}">{{ attack.name }}</label>
+            </div>
+            {% endfor %}
+
+            <button type="submit">Add to Team</button>
+        </form>
+    </div>
+</body>
+
+</html>
