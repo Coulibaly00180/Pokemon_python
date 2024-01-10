@@ -6,12 +6,16 @@ def create_team(request):
         team_name = request.POST.get('team_name')
         if team_name:
             Team.createTeam(team_name)
-            return redirect('create_team')  # Rediriger vers une vue appropriée
-    return render(request, 'create_team.html')  # Renvoyer à la page de création d'équipe
+            return redirect('create_team')  
+    return render(request, 'create_team.html')  
 
 def delete_team(request, team_name):
     Team.deleteTeam(team_name)
-    return redirect('some_view_to_redirect')
+    teams = Team.objects.all()
+    for team in teams:
+        print(team.name)  # or use logging
+
+    return render(request, 'all_teams.html', {'teams': teams})
 
 def rename_team(request, old_name):
     if request.method == 'POST':
@@ -23,12 +27,12 @@ def rename_team(request, old_name):
 
 def add_pokemon_to_team(request, team_id):
     team = Team.objects.get(id=team_id)
-    pokemons = Pokemon.objects.all()  # Obtenir tous les Pokémon disponibles
-    attacks = Attack.objects.all()  # Obtenir toutes les attaques disponibles
+    pokemons = Pokemon.objects.all()
+    attacks = Attack.objects.all()  
 
     if request.method == 'POST':
         pokemon_id = request.POST.get('pokemon_id')
-        selected_attacks = request.POST.getlist('attacks')  # Liste des noms d'attaques sélectionnées
+        selected_attacks = request.POST.getlist('attacks')
 
         if pokemon_id and len(selected_attacks) <= 4:
             pokemon = Pokemon.objects.get(id=pokemon_id)
