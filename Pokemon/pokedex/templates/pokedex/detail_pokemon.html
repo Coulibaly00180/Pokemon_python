@@ -30,7 +30,7 @@
             border : 2px solid black;
             width: 50%;
             margin: auto;
-            margin-top:3em;
+            margin-top:1em;
         }
         img {
             width:30%;
@@ -78,6 +78,18 @@
         .navbar a.right {
             float: right;
         }
+        .changePage {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1.5em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            margin-top:2em;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
 
     </style>
 </head>
@@ -93,6 +105,10 @@
             <a href="#connexion" class="right">Connexion</a>
         </nav>
     </div>  
+    <div class="changePage">
+        <a href="{% url 'detail_pokemon' pokemon.number|add:"-1" %}">Poké. Précédent</a>
+        <a href="{% url 'detail_pokemon' pokemon.number|add:"1" %}">Poké. Suivant</a>
+    </div>
     <div class="detailsCard">
         <h1>{{ pokemon.name|capfirst }}</h1>
         <img src="{{ pokemon.image }}" alt="Image de {{ pokemon.name }}">

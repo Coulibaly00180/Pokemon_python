@@ -15,6 +15,7 @@ def get_pokemon_details(pokedex_number):
     response = requests.get(url)
     pokemon_details = response.json()
     return {
+        'number': int(pokemon_details['id']),
         'name': pokemon_details['name'],
         'image': pokemon_details['sprites']['other']['official-artwork']['front_default'],
         'types': [type['type']['name'] for type in pokemon_details['types']],
