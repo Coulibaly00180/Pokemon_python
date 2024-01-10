@@ -70,7 +70,6 @@
 
     <div class="allCards">
         {% for pokemon in pokemons %}
-            
             <div class="card">
                 <h2>{{ pokemon.name|capfirst }}</h2>
                 <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}" width="50%">

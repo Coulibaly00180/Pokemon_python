@@ -5,7 +5,7 @@ from .models import Pokemon, Attack
 from django.core.paginator import Paginator
 
 # Recuperer 10 pokemon
-def get_pokemons(page=1, limit=10):
+def get_pokemons(page=1, limit=12):
     offset = (page - 1) * limit
     response = requests.get(f'https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}')
     return response.json()
@@ -20,6 +20,7 @@ def get_pokemon_details(pokedex_number):
     attack_names = [attack['move']['name'] for attack in attacks]
 
     return {
+        'number': int(pokemon_details['id']),
         'name': pokemon_details['name'],
         'image': pokemon_details['sprites']['other']['official-artwork']['front_default'],
         'types': [type['type']['name'] for type in pokemon_details['types']],
