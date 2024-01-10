@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
-
+from django.http import HttpResponse
+from .models import Pokemon, Attack, Team
 from django.core.paginator import Paginator
 
 # Recuperer 10 pokemon
@@ -14,6 +15,10 @@ def get_pokemon_details(pokedex_number):
     url = f"https://pokeapi.co/api/v2/pokemon/{pokedex_number}/"
     response = requests.get(url)
     pokemon_details = response.json()
+
+    attacks = pokemon_details['moves']
+    attack_names = [attack['move']['name'] for attack in attacks]
+
     return {
         'name': pokemon_details['name'],
         'image': pokemon_details['sprites']['other']['official-artwork']['front_default'],
@@ -22,6 +27,7 @@ def get_pokemon_details(pokedex_number):
         'weight': pokemon_details['weight'],
         'stats': [base_stat['stat']['name'] for base_stat in pokemon_details['stats']],
         'stats_of': [{'name': stat['stat']['name'], 'value': stat['base_stat']} for stat in pokemon_details['stats']],
+        'attacks': attack_names,
     }
 
 # Ajoutez un pokémon dans la team
@@ -100,4 +106,45 @@ def index_pokedex(request):
 
 def detail_pokemon_view(request, pokedex_number):
     pokemon_details = get_pokemon_details(pokedex_number)
+    # Si vous avez un modèle Pokemon, mettez à jour ou créez un enregistrement avec les détails actuels
+    pokemon, created = Pokemon.objects.update_or_create(
+        pokedex_number=pokedex_number,
+        defaults={
+            'name': pokemon_details['name'],
+            # autres champs...
+        }
+    )
+
+    # Récupérez toutes les équipes disponibles
+    teams = Team.objects.all()
+
+    # Passer les détails du Pokémon et la liste des équipes au template
+    context = {
+        'pokemon': pokemon_details,
+        'teams': teams,
+        'pokedex_number': pokedex_number
+    }
     return render(request, 'pokedex/detail_pokemon.html', {'pokemon': pokemon_details})
+
+
+"""
+def save_attack_view(request):
+    if request.method == 'POST':
+        # Ici, 'selected_attacks' est le nom du champ dans votre formulaire HTML.
+        selected_attacks = request.POST.getlist('selected_attacks')
+        if selected_attacks:
+            # Limitez le nombre d'attaques à 4
+            selected_attacks = selected_attacks[:4]
+            Attack.saveAttack(selected_attacks)
+            return redirect('success_view')  # Rediriger vers une vue de succès
+        else:
+            return HttpResponse("Aucune attaque sélectionnée", status=400)
+
+    # Supposons que vous ayez une liste d'attaques à afficher à l'utilisateur
+    all_attacks = ["thunderbolt", "surf", "flamethrower", "ice-beam"]  # Exemple de liste
+    return render(request, 'save_attack.html', {'all_attacks': all_attacks})
+
+# Vue pour montrer le succès de l'opération
+def success_view(request):
+    return render(request, 'success.html')
+"""
