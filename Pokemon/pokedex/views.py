@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 import requests
 from django.http import HttpResponse
-from .models import Pokemon, Attack, Team
+from .models import Pokemon, Attack
 from django.core.paginator import Paginator
 
 # Recuperer 10 pokemon
@@ -105,25 +105,7 @@ def index_pokedex(request):
     })
 
 def detail_pokemon_view(request, pokedex_number):
-    pokemon_details = get_pokemon_details(pokedex_number)
-    # Si vous avez un modèle Pokemon, mettez à jour ou créez un enregistrement avec les détails actuels
-    pokemon, created = Pokemon.objects.update_or_create(
-        pokedex_number=pokedex_number,
-        defaults={
-            'name': pokemon_details['name'],
-            # autres champs...
-        }
-    )
-
-    # Récupérez toutes les équipes disponibles
-    teams = Team.objects.all()
-
-    # Passer les détails du Pokémon et la liste des équipes au template
-    context = {
-        'pokemon': pokemon_details,
-        'teams': teams,
-        'pokedex_number': pokedex_number
-    }
+    pokemon_details = get_pokemon_details(pokedex_number)    
     return render(request, 'pokedex/detail_pokemon.html', {'pokemon': pokemon_details})
 
 

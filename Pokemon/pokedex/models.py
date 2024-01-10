@@ -16,32 +16,29 @@ class Attack(models.Model):
         status_part = f", Status Effect: {self.status_effect}" if self.status_effect else ""
         return f"{self.name} ({self.attack_type}, Power: {self.power}{status_part})"
     
-    """
+    
     @staticmethod
     def saveAttack(attack_names):
-        base_url = "https://pokeapi.co/api/v2/move/"
         for name in attack_names:
-            response = requests.get(f"{base_url}{name}")
-            if response.status_code == 200:
-                data = response.json()
-                # Création d'une nouvelle attaque en utilisant les données de l'API
-                attack, created = Attack.objects.get_or_create(
-                    name=data["name"],
-                    attack_type=data["type"]["name"],
-                    power=data.get("power", 0),  # Utiliser des valeurs par défaut si non disponible
-                    status_effect=data.get("effect_entries", [{}])[0].get("short_effect", ""),
-                    status_effect_chance=data.get("effect_chance", 0),
-                    status_change="",
-                    stat_change=0,
-                    stat_change_target="self"
-                )
-                if created:
-                    print(f"Attack {attack.name} created successfully")
-                else:
-                    print(f"Attack {attack.name} already exists")
-            else:
-                print(f"Failed to fetch data for attack: {name}")
-    """
+            # Vérifier si l'attaque existe déjà dans la base de données
+            if not Attack.objects.filter(name=name).exists():
+                # Appel API pour obtenir les informations sur l'attaque
+                response = requests.get(f'https://pokeapi.co/api/v2/move/{name}')
+                if response.status_code == 200:
+                    data = response.json()
+                    # Créer une nouvelle instance d'Attack
+                    attack = Attack(
+                        name=name,
+                        attack_type=data['type']['name'],
+                        power=data['power'],
+                        status_effect=data.get('status_effect', ''),
+                        status_effect_chance=data.get('status_effect_chance', 0),
+                        status_change=data.get('status_change', ''),
+                        stat_change=data.get('stat_change', None),
+                        stat_change_target=data.get('stat_change_target', 'self')
+                    )
+                    attack.save()
+    
 
 class Pokemon(models.Model):
     number = models.PositiveSmallIntegerField()

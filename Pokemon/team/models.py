@@ -33,15 +33,22 @@ class Team(models.Model):
         except Team.DoesNotExist:
             return False
 
-    def addPokemonTeam(self, pokemon, selected_attacks):
+    def addPokemonTeam(self, pokemon, attack_names):
+        # Vérifiez si l'équipe a moins de 6 Pokémon
         if self.pokemons.count() < 6:
-            # Enregistrez ou sélectionnez les attaques
-            for attack_name in selected_attacks:
-                attack, created = Attack.objects.get_or_create(name=attack_name)
-                pokemon.attacks.add(attack)
-
             # Ajoutez le Pokémon à l'équipe
             self.pokemons.add(pokemon)
+
+            # Enregistrez les attaques sélectionnées pour ce Pokémon
+            for attack_name in attack_names:
+                # Utilisez la fonction saveAttack pour enregistrer l'attaque
+                # Assurez-vous que saveAttack est ajustée pour gérer une attaque à la fois
+                Attack.saveAttack(attack_name)
+
+                # Associez l'attaque au Pokémon
+                attack = Attack.objects.get(name=attack_name)
+                pokemon.attacks.add(attack)
+
             return True
         else:
             return False
