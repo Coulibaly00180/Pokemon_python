@@ -4,12 +4,12 @@ import requests
 
 class Attack(models.Model):
     name = models.CharField(max_length=50)
-    attack_type = models.CharField(max_length=20)  # Par exemple : "Feu", "Eau", etc.
+    attack_type = models.CharField(max_length=20)
     power = models.PositiveSmallIntegerField()
-    status_effect = models.CharField(max_length=20, blank=True, null=True)  # Par exemple : "poison", etc.
+    status_effect = models.CharField(max_length=20, blank=True, null=True) 
     status_effect_chance = models.FloatField(default=0)
-    status_change = models.CharField(max_length=50, blank=True, null=True)  # Par exemple : "réduction de vitesse", etc.
-    stat_change = models.IntegerField(blank=True, null=True)  # Montant du changement de stat, peut être négatif
+    status_change = models.CharField(max_length=50, blank=True, null=True)
+    stat_change = models.IntegerField(blank=True, null=True) 
     stat_change_target = models.CharField(max_length=10, default="self")
 
     def __str__(self):
@@ -20,7 +20,7 @@ class Attack(models.Model):
     @staticmethod
     def saveAttack(attack_names):
         for name in attack_names:
-            # Vérifier si l'attaque existe déjà dans la base de données
+            # Vérifier si l'attaque existe déjà dans la BDD
             if not Attack.objects.filter(name=name).exists():
                 # Appel API pour obtenir les informations sur l'attaque
                 response = requests.get(f'https://pokeapi.co/api/v2/move/{name}')
@@ -56,13 +56,11 @@ class Pokemon(models.Model):
             else:
                 self.type2 = None
             self.max_health = data['stats'][0]['base_stat']
-            self.current_health = self.max_health  # Suppose initial health is max health
+            self.current_health = self.max_health 
             self.attack = data['stats'][1]['base_stat']
             self.defense = data['stats'][2]['base_stat']
             self.speed = data['stats'][5]['base_stat']
-            # Vous pouvez également récupérer d'autres informations si nécessaire
         else:
-            # Gérer les erreurs ou les cas où la requête échoue
             print("Erreur lors de la récupération des données depuis PokeAPI")
 
         self.is_knocked_out = False

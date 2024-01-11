@@ -117,12 +117,12 @@
     <div class="section-home">
         <nav class="navbar">
             <a href="/pokedex">Pokedex</a>
-            <a href="/team">Team</a>
+            <a href="/team/create">Team</a>
             <a href="/combat">Combat</a>
             <a href="#inscription" class="right">Inscription</a>
             <a href="#connexion" class="right">Connexion</a>
         </nav>
-    </div>
+    </div>   
     <div class="changePage">
         <a href="{% url 'detail_pokemon' pokemon.number|add:" -1 " %}">Poké. Précédent</a>
         <a href="{% url 'detail_pokemon' pokemon.number|add:" 1 " %}">Poké. Suivant</a>
@@ -160,10 +160,10 @@
                         {% endfor %}
             </tbody>
         </table>
-        <form method="post" action="% url ../views.py team_id %">
+        <form method="post">
             {% csrf_token %}
-            <label for="team">Choisissez une équipe :</label>
-            <select name="team" id="team">
+            <label>Choisissez une équipe :</label>
+            <select name="teamName" id="teamId">
                 {% for team in teams %}
                 <option value="{{ team.id }}">{{ team.name }}</option>
                 {% endfor %}
@@ -173,7 +173,7 @@
             {% for attack in pokemon.attacks %}
             <input type="checkbox" id="attack_{{ forloop.counter }}" name="selected_attacks" value="{{ attack }}">
             <label for="attack_{{ forloop.counter }}">{{ attack|capfirst }}</label><br> {% endfor %}
-
+        
             <button class="addTeam" type="submit">Ajouter à l'équipe</button>
         </form>
     </div>

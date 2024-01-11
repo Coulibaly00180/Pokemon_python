@@ -25,10 +25,31 @@
             display: block;
             margin-top: 10px;
         }
+        .section-home {
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar a.right {
+            float: right;
+        }
     </style>
 </head>
 
 <body>
+
     <div class="container">
         <h1>Add Pokémon to Team: {{ team.name }}</h1>
         <form method="post">

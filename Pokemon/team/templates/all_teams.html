@@ -59,10 +59,42 @@
         a:hover {
             color: #0056b3;
         }
+        .section-home {
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        .navbar a.right {
+            float: right;
+        }
     </style>
 </head>
 
 <body>
+    <div class="section-home">
+        <nav class="navbar">
+            <a href="/pokedex">Pokedex</a>
+            <a href="/team">Team</a>
+            <a href="/combat">Combat</a>
+            <a href="#inscription" class="right">Inscription</a>
+            <a href="#connexion" class="right">Connexion</a>
+        </nav>
+    </div>
     <div class="container">
         <h1>All Pokémon Teams</h1>
         <table>
