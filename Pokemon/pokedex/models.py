@@ -1,7 +1,6 @@
 from django.db import models
 import requests
 
-
 class Attack(models.Model):
     name = models.CharField(max_length=50)
     attack_type = models.CharField(max_length=20)
@@ -75,6 +74,35 @@ class Pokemon(models.Model):
         self.attack_modifier = 0
         self.defense_modifier = 0
         self.speed_modifier = 0
+
+    def fetch_pokeapi_data(self):
+        # Utilisez 'self.number' au lieu de 'self.number_pokedex'
+        response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{self.number}")
+        if response.status_code == 200:
+            data = response.json()
+            # ... le reste de votre logique de traitement des données ...
+        else:
+            print("Erreur lors de la récupération des données depuis PokeAPI")
+
+    def get_pokemon_details(pokedex_number):
+        url = f"https://pokeapi.co/api/v2/pokemon/{pokedex_number}/"
+        response = requests.get(url)
+        pokemon_details = response.json()
+
+        attacks = pokemon_details['moves']
+        attack_names = [attack['move']['name'] for attack in attacks]
+
+        return {
+            'number': int(pokemon_details['id']),
+            'name': pokemon_details['name'],
+            'image': pokemon_details['sprites']['other']['official-artwork']['front_default'],
+            'types': [type['type']['name'] for type in pokemon_details['types']],
+            'height': pokemon_details['height'],
+            'weight': pokemon_details['weight'],
+            'stats': [base_stat['stat']['name'] for base_stat in pokemon_details['stats']],
+            'stats_of': [{'name': stat['stat']['name'], 'value': stat['base_stat']} for stat in pokemon_details['stats']],
+            'attacks': attack_names,
+        }
 
     def __str__(self):
         return self.name

@@ -58,7 +58,7 @@
                 {% for pokemon in pokemons %}
                 <tr>
                     <td>{{ pokemon.name }}</td>
-                    <!-- Add more data cells if you have more attributes to show -->
+                    <td><img src="{{ pokemon.image }}" alt="Image de {{ pokemon.name }}"></td>
                 </tr>
                 {% empty %}
                 <tr>

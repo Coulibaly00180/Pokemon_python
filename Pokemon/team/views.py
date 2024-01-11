@@ -1,5 +1,9 @@
-from django.shortcuts import render, redirect
-from .models import Team, Pokemon, Attack
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Team
+import random
+import requests
+from pokedex.models import Pokemon, Attack
+from django.db import IntegrityError
 
 def create_team(request):
     if request.method == 'POST':
@@ -22,37 +26,13 @@ def rename_team(request, old_name):
         new_name = request.POST.get('new_name')
         if new_name:
             Team.renameTeam(old_name, new_name)
-            return redirect('some_view_to_redirect')
+            
     return render(request, 'rename_team.html', {'old_name': old_name})
 
-def add_pokemon_to_team(request, team_id):
-    team = Team.objects.get(id=team_id)
-    pokemons = Pokemon.objects.all()
-    attacks = Attack.objects.all()  
-
-    if request.method == 'POST':
-        pokemon_id = request.POST.get('pokemon_id')
-        selected_attacks = request.POST.getlist('attacks')
-
-        if pokemon_id and len(selected_attacks) <= 4:
-            pokemon = Pokemon.objects.get(id=pokemon_id)
-            added_successfully = team.addPokemonTeam(pokemon, selected_attacks)
-
-            if added_successfully:
-                return redirect('team_detail', team_id=team.id)  # Redirige vers une page de détail de l'équipe
-            else:
-                # Gérer le cas où l'ajout échoue (par exemple, l'équipe a déjà 6 Pokémon)
-                pass
-
-    return render(request, 'add_pokemon_to_team.html', {
-        'team': team,
-        'pokemons': pokemons,
-        'attacks': attacks
-    })
 
 def clear_pokemons_from_team(request, team_name):
     Team.clearAllPokemonTeam(team_name)
-    return redirect('some_view_to_redirect')
+    return redirect('all_teams.html')
 
 def showAllTeam(request):
     teams = Team.objects.all()  # Récupère toutes les équipes
@@ -61,4 +41,69 @@ def showAllTeam(request):
 def showTeam(request, id):
     team = Team.objects.get(id=id)  # Récupère l'équipe spécifique par son ID
     pokemons = team.pokemons.all()  # Récupère tous les Pokémon dans cette équipe
-    return render(request, 'team_detail.html', {'team': team, 'pokemons': pokemons})
+
+    pokemons_details = []
+
+    for pokemon in pokemons:
+        response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.number}")
+        if response.status_code == 200:
+            pokemon_data = response.json()
+            types = [t['type']['name'] for t in pokemon_data['types']]
+            image_url = pokemon_data['sprites']['other']['official-artwork']['front_default']
+
+            pokemons_details.append({
+                'name': pokemon_data['name'],
+                'image': image_url,
+                'types': types
+            })
+
+    return render(request, 'team_detail.html', {'team': team, 'pokemons': pokemons_details})
+
+def add_pokemon_to_team(request, pokedex_number):
+    if request.method == 'POST':
+        team_id = request.POST.get('teamId')
+        team = get_object_or_404(Team, id=team_id)
+
+        # Récupérer les détails du Pokémon depuis PokeAPI
+        response = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/')
+        if response.status_code == 200:
+            pokemon_data = response.json()
+
+            # Créer ou récupérer l'instance du Pokémon
+            pokemon, created = Pokemon.objects.get_or_create(
+                number=pokedex_number,
+                defaults={
+                    'name': pokemon_data['name'],
+                    # Ajoutez d'autres champs nécessaires ici
+                }
+            )
+
+            # Récupérer les attaques et sélectionner aléatoirement 4 attaques
+            all_attacks = [attack['move']['name'] for attack in pokemon_data['moves']]
+            selected_attacks = random.sample(all_attacks, min(len(all_attacks), 4))
+
+            # Ajouter les attaques sélectionnées au Pokémon
+            for attack_name in selected_attacks:
+                attack_response = requests.get(f'https://pokeapi.co/api/v2/move/{attack_name}/')
+                if attack_response.status_code == 200:
+                    attack_details = attack_response.json()
+                    print(attack_details.get('accuracy'))
+                    attack, _ = Attack.objects.get_or_create(
+                        name=attack_name,
+                        defaults={
+                            'attack_type': attack_details['type']['name'],
+                            'power': attack_details.get('accuracy'),
+                            # Ajoutez ici les autres champs nécessaires
+                        }
+                    )
+                    pokemon.attacks.add(attack)
+
+            # Ajouter le Pokémon à l'équipe
+            team.pokemons.add(pokemon)
+            team.save()
+        else:
+            print("Erreur lors de la récupération des données du Pokémon")
+
+        return redirect('team_detail', id=team_id)
+
+    return redirect('index_pokedex')

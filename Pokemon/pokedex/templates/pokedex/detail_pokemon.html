@@ -160,22 +160,19 @@
                         {% endfor %}
             </tbody>
         </table>
-        <form method="post">
+        <form method="post" action="{% url 'add_pokemon_to_team' pokemon.number %}">
             {% csrf_token %}
-            <label>Choisissez une équipe :</label>
-            <select name="teamName" id="teamId">
+            <label for="teamId">Choisissez une équipe :</label>
+            <select name="teamId" id="teamId">
                 {% for team in teams %}
-                <option value="{{ team.id }}">{{ team.name }}</option>
+                    <option value="{{ team.id }}">{{ team.name }}</option>
                 {% endfor %}
             </select>
-
-            <h3>Sélectionnez les attaques (max 4) :</h3>
-            {% for attack in pokemon.attacks %}
-            <input type="checkbox" id="attack_{{ forloop.counter }}" name="selected_attacks" value="{{ attack }}">
-            <label for="attack_{{ forloop.counter }}">{{ attack|capfirst }}</label><br> {% endfor %}
+        
+            <!-- Ajoutez ici la sélection des attaques si nécessaire -->
         
             <button class="addTeam" type="submit">Ajouter à l'équipe</button>
-        </form>
+        </form>        
     </div>
 </body>
 

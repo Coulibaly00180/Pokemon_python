@@ -52,8 +52,7 @@ class Team(models.Model):
             return True
         else:
             return False
-
-
+        
     @staticmethod
     def clearAllPokemonTeam(name_team):
         try:
